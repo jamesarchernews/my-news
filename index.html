@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.4">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Global News Command Center&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body { background: #0a0a0a; color: #eee; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>h1 { font-size: 1.5rem; color: #ff0000; margin-bottom: 20px; text-transform: uppercase; border-left: 5px solid #ff0000; padding-left: 15px; }</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* Controls Area */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>#ui-layer { background: #1a1a1a; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.input-group { display: flex; gap: 10px; margin-bottom: 15px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>input { flex-grow: 1; padding: 12px; border-radius: 4px; border: 1px solid #333; background: #000; color: #fff; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>button { cursor: pointer; border: none; border-radius: 4px; font-weight: bold; transition: 0.2s; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.btn-add { background: #ff0000; color: white; padding: 0 25px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.btn-add:hover { background: #cc0000; }</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* Preset Buttons */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.presets { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.preset-btn { background: #333; color: #ccc; padding: 6px 12px; font-size: 0.8rem; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.preset-btn:hover { background: #444; color: #fff; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* The News Grid */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>#news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(30%, 1fr)); gap: 15px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.video-container { background: #000; position: relative; padding-bottom: 56.25%; height: 0; border: 1px solid #222; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.close-vid { position: absolute; top: 5px; right: 5px; z-index: 10; background: rgba(255,0,0,0.7); color: white; border: none; border-radius: 3px; cursor: pointer; padding: 2px 8px; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>@media (max-width: 1000px) { #news-grid { grid-template-columns: repeat(auto-fill, minmax(45%, 1fr)); } }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>@media (max-width: 600px) { #news-grid { grid-template-columns: 1fr; } }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h1&gt;Live News Command Center&lt;/h1&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="ui-layer"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="input-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="urlInput" placeholder="Paste any YouTube Live link here..."&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="btn-add" onclick="addStreamFromInput()"&gt;Add Stream&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="presets"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;span style="font-size: 0.8rem; margin-right: 10px; color: #888;"&gt;PRESETS:&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="preset-btn" onclick="addStream('5678910', 'Sky News')"&gt;Sky News (UK)&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="preset-btn" onclick="addStream('-u_S6K0I8N4', 'Al Jazeera')"&gt;Al Jazeera&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="preset-btn" onclick="addStream('J_S07uVzWfI', 'ABC News')"&gt;ABC News (US)&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="preset-btn" onclick="addStream('V9K88A-vS7o', 'DW News')"&gt;DW (Germany)&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="preset-btn" onclick="addStream('9uX_6m9Wv9U', 'France 24')"&gt;France 24&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="preset-btn" onclick="addStream('qS_YI7hV7h8', 'CNA')"&gt;CNA (Asia)&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="preset-btn" onclick="clearGrid()" style="background:#444;"&gt;Clear Grid&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="news-grid"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Note: YouTube Live IDs change occasionally.<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// These IDs are generic "Live" endpoints or current active streams.</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function addStream(videoId, label) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const grid = document.getElementById('news-grid');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const wrapper = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>wrapper.className = 'video-container';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>wrapper.innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button class="close-vid" onclick="this.parentElement.remove()"&gt;✕&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&amp;mute=1"<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>frameborder="0" allow="autoplay; encrypted-media" allowfullscreen&gt;&lt;/iframe&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>grid.appendChild(wrapper);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function addStreamFromInput() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const val = document.getElementById('urlInput').value;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const id = extractId(val);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (id) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>addStream(id, 'Custom');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('urlInput').value = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>alert("Please enter a valid YouTube URL");</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function extractId(url) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&amp;v=)([^#\&amp;\?]*).*/;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const match = url.match(regExp);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>return (match &amp;&amp; match[2].length == 11) ? match[2] : null;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function clearGrid() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('news-grid').innerHTML = '';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
