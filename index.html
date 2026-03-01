@@ -8,17 +8,17 @@
         :root { --red: #e63946; --dark: #0b0d17; --card: #161b22; --text: #f0f6fc; }
         body { background: var(--dark); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; overflow-x: hidden; padding-bottom: 60px; }
         
-        /* Header & Clocks */
-        header { background: #010409; padding: 1rem 2rem; border-bottom: 2px solid var(--red); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .logo { font-weight: 900; font-size: 1.2rem; color: var(--red); text-transform: uppercase; letter-spacing: 2px; }
+        /* Expanded Header & 6 Clocks */
+        header { background: #010409; padding: 1rem; border-bottom: 2px solid var(--red); display: flex; flex-direction: column; align-items: center; gap: 15px; position: sticky; top: 0; z-index: 1000; }
+        .logo { font-weight: 900; font-size: 1.1rem; color: var(--red); text-transform: uppercase; letter-spacing: 3px; border-bottom: 1px solid #30363d; width: 100%; text-align: center; padding-bottom: 10px; }
         
-        .clocks { display: flex; gap: 15px; font-family: 'Courier New', monospace; }
-        .clock { text-align: center; border-left: 1px solid #30363d; padding-left: 12px; min-width: 100px; }
-        .clock strong { display: block; font-size: 0.9rem; color: #fff; }
-        .clock span { display: block; color: #8b949e; font-size: 0.6rem; text-transform: uppercase; margin-top: 2px; }
+        .clocks { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; width: 100%; }
+        .clock { text-align: center; background: #0d1117; border: 1px solid #30363d; border-radius: 4px; padding: 8px; min-width: 130px; flex: 1; }
+        .clock strong { display: block; font-size: 1rem; color: #fff; font-family: 'Courier New', monospace; }
+        .clock span { display: block; color: #8b949e; font-size: 0.65rem; text-transform: uppercase; margin-top: 4px; font-weight: bold; }
 
         /* Controls */
-        .controls { background: var(--card); margin: 15px; padding: 20px; border-radius: 8px; border: 1px solid #30363d; }
+        .controls { background: var(--card); margin: 15px; padding: 15px; border-radius: 8px; border: 1px solid #30363d; }
         .input-box { display: flex; gap: 10px; }
         input { flex: 1; background: #000; border: 1px solid #30363d; color: white; padding: 12px; border-radius: 6px; outline: none; font-size: 0.9rem; }
         input:focus { border-color: var(--red); }
@@ -27,56 +27,14 @@
 
         /* Monitor Grid */
         #monitor-wall { display: grid; grid-template-columns: repeat(auto-fill, minmax(450px, 1fr)); gap: 15px; padding: 15px; }
-        .monitor { background: #000; border: 1px solid #30363d; border-radius: 8px; overflow: hidden; position: relative; aspect-ratio: 16 / 9; }
+        .monitor { background: #000; border: 1px solid #30363d; border-radius: 8px; overflow: hidden; position: relative; aspect-ratio: 16 / 9; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .monitor iframe { width: 100%; height: 100%; border: none; }
         .m-tools { position: absolute; top: 10px; right: 10px; opacity: 0; transition: 0.3s; z-index: 10; }
         .monitor:hover .m-tools { opacity: 1; }
         .close-btn { background: rgba(230, 57, 70, 0.9); color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px; font-size: 11px; font-weight: bold; }
 
         /* Bottom Ticker */
-        #ticker { position: fixed; bottom: 0; width: 100%; background: var(--red); height: 40px; line-height: 40px; display: flex; font-weight: bold; z-index: 2000; box-shadow: 0 -5px 15px rgba(0,0,0,0.5); }
+        #ticker { position: fixed; bottom: 0; width: 100%; background: var(--red); height: 40px; line-height: 40px; display: flex; font-weight: bold; z-index: 2000; }
         .t-label { background: #000; padding: 0 20px; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
-        #t-scroll { white-space: nowrap; animation: scroll 70s linear infinite; padding-left: 100%; }
-        #t-scroll span { margin-right: 60px; font-size: 0.85rem; }
-        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-100%); } }
-
-        @media (max-width: 800px) { 
-            header { flex-direction: column; gap: 10px; }
-            .clocks { flex-wrap: wrap; justify-content: center; }
-            #monitor-wall { grid-template-columns: 1fr; }
-        }
-    </style>
-</head>
-<body>
-
-<header>
-    <div class="logo">Global Intel Feed</div>
-    <div class="clocks">
-        <div class="clock"><strong id="la">00:00:00</strong><span>Los Angeles</span></div>
-        <div class="clock"><strong id="tel">00:00:00</strong><span>Tel Aviv</span></div>
-        <div class="clock"><strong id="teh">00:00:00</strong><span>Tehran</span></div>
-        <div class="clock"><strong id="pyo">00:00:00</strong><span>Pyongyang</span></div>
-    </div>
-</header>
-
-<div class="controls">
-    <div class="input-box">
-        <input type="text" id="yt-url" placeholder="Paste YouTube Live Link Here...">
-        <button class="btn-main" onclick="handleInput()">ADD FEED</button>
-        <button class="btn-clear" onclick="document.getElementById('monitor-wall').innerHTML=''">CLEAR ALL</button>
-    </div>
-</div>
-
-<div id="monitor-wall"></div>
-
-<div id="ticker">
-    <div class="t-label">Global Pulse</div>
-    <div id="t-scroll">Initialising world news headlines...</div>
-</div>
-
-<script>
-    // 1. World Clocks Logic
-    function updateClocks() {
-        const options = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-        document.getElementById('la').innerText = new Date().toLocaleTimeString('en-GB', { ...options, timeZone: 'America/Los_Angeles' });
-        document.getElementById('tel').innerText = new Date().toLocaleTimeString('en
+        #t-scroll { white-space: nowrap; animation: scroll 80s linear infinite; padding-left: 100%; }
+        #t-scroll span { margin-right: 60px; font-size: 0.8
