@@ -6,74 +6,64 @@
     <title>Global Newsroom Command</title>
     <style>
         :root { --red: #e63946; --dark: #0b0d17; --card: #161b22; --text: #f0f6fc; }
-        body { background: var(--dark); color: var(--text); font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
+        body { background: var(--dark); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; overflow-x: hidden; padding-bottom: 60px; }
         
-        /* Dashboard Header */
+        /* Header & Clocks */
         header { background: #010409; padding: 1rem 2rem; border-bottom: 2px solid var(--red); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .logo { font-weight: 900; font-size: 1.4rem; color: var(--red); text-transform: uppercase; letter-spacing: 2px; }
+        .logo { font-weight: 900; font-size: 1.2rem; color: var(--red); text-transform: uppercase; letter-spacing: 2px; }
         
-        /* Timezones */
-        .clocks { display: flex; gap: 20px; font-family: 'Courier New', monospace; font-size: 0.85rem; }
-        .clock { text-align: center; border-left: 1px solid #30363d; padding-left: 15px; }
-        .clock span { display: block; color: #8b949e; font-size: 0.65rem; text-transform: uppercase; }
+        .clocks { display: flex; gap: 15px; font-family: 'Courier New', monospace; }
+        .clock { text-align: center; border-left: 1px solid #30363d; padding-left: 12px; min-width: 100px; }
+        .clock strong { display: block; font-size: 0.9rem; color: #fff; }
+        .clock span { display: block; color: #8b949e; font-size: 0.6rem; text-transform: uppercase; margin-top: 2px; }
 
-        /* Control Panel */
+        /* Controls */
         .controls { background: var(--card); margin: 15px; padding: 20px; border-radius: 8px; border: 1px solid #30363d; }
-        .input-box { display: flex; gap: 10px; margin-bottom: 15px; }
-        input { flex: 1; background: #010409; border: 1px solid #30363d; color: white; padding: 12px; border-radius: 6px; outline: none; }
+        .input-box { display: flex; gap: 10px; }
+        input { flex: 1; background: #000; border: 1px solid #30363d; color: white; padding: 12px; border-radius: 6px; outline: none; font-size: 0.9rem; }
         input:focus { border-color: var(--red); }
-        button { background: var(--red); color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        button:hover { filter: brightness(1.2); }
+        .btn-main { background: var(--red); color: white; border: none; padding: 0 25px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        .btn-clear { background: #30363d; color: #fff; border: none; padding: 0 15px; border-radius: 6px; cursor: pointer; }
 
-        /* Preset Quick-Links */
-        .presets { display: flex; gap: 10px; flex-wrap: wrap; }
-        .p-btn { background: #21262d; font-size: 0.75rem; border: 1px solid #30363d; color: #c9d1d9; }
-        .p-btn:hover { background: #30363d; color: white; }
-
-        /* News Grid */
+        /* Monitor Grid */
         #monitor-wall { display: grid; grid-template-columns: repeat(auto-fill, minmax(450px, 1fr)); gap: 15px; padding: 15px; }
         .monitor { background: #000; border: 1px solid #30363d; border-radius: 8px; overflow: hidden; position: relative; aspect-ratio: 16 / 9; }
         .monitor iframe { width: 100%; height: 100%; border: none; }
-        .m-tools { position: absolute; top: 8px; right: 8px; display: flex; gap: 5px; opacity: 0.3; transition: 0.3s; }
+        .m-tools { position: absolute; top: 10px; right: 10px; opacity: 0; transition: 0.3s; z-index: 10; }
         .monitor:hover .m-tools { opacity: 1; }
-        .m-btn { background: rgba(0,0,0,0.8); color: white; border: 1px solid #fff; font-size: 10px; padding: 2px 6px; cursor: pointer; border-radius: 3px; }
+        .close-btn { background: rgba(230, 57, 70, 0.9); color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px; font-size: 11px; font-weight: bold; }
 
-        /* Scrolling Ticker */
-        #ticker { position: fixed; bottom: 0; width: 100%; background: var(--red); height: 40px; line-height: 40px; display: flex; font-weight: bold; z-index: 2000; }
-        .t-label { background: #000; padding: 0 20px; text-transform: uppercase; font-size: 0.8rem; }
-        #t-scroll { white-space: nowrap; animation: scroll 60s linear infinite; padding-left: 100%; }
-        #t-scroll span { margin-right: 60px; font-size: 0.9rem; }
+        /* Bottom Ticker */
+        #ticker { position: fixed; bottom: 0; width: 100%; background: var(--red); height: 40px; line-height: 40px; display: flex; font-weight: bold; z-index: 2000; box-shadow: 0 -5px 15px rgba(0,0,0,0.5); }
+        .t-label { background: #000; padding: 0 20px; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
+        #t-scroll { white-space: nowrap; animation: scroll 70s linear infinite; padding-left: 100%; }
+        #t-scroll span { margin-right: 60px; font-size: 0.85rem; }
         @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-100%); } }
 
-        @media (max-width: 600px) { #monitor-wall { grid-template-columns: 1fr; } }
+        @media (max-width: 800px) { 
+            header { flex-direction: column; gap: 10px; }
+            .clocks { flex-wrap: wrap; justify-content: center; }
+            #monitor-wall { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo">NewsRoom Live</div>
+    <div class="logo">Global Intel Feed</div>
     <div class="clocks">
-        <div class="clock"><strong id="ny">00:00</strong><span>New York</span></div>
-        <div class="clock"><strong id="ldn">00:00</strong><span>London</span></div>
-        <div class="clock"><strong id="tky">00:00</strong><span>Tokyo</span></div>
-        <div class="clock"><strong id="del">00:00</strong><span>New Delhi</span></div>
+        <div class="clock"><strong id="la">00:00:00</strong><span>Los Angeles</span></div>
+        <div class="clock"><strong id="tel">00:00:00</strong><span>Tel Aviv</span></div>
+        <div class="clock"><strong id="teh">00:00:00</strong><span>Tehran</span></div>
+        <div class="clock"><strong id="pyo">00:00:00</strong><span>Pyongyang</span></div>
     </div>
 </header>
 
 <div class="controls">
     <div class="input-box">
-        <input type="text" id="yt-url" placeholder="Paste YouTube Live URL or Search Keyword...">
-        <button onclick="handleInput()">Add To Wall</button>
-    </div>
-    <div class="presets">
-        <button class="p-btn" onclick="addFeed('5678910')">Sky News (UK)</button>
-        <button class="p-btn" onclick="addFeed('-u_S6K0I8N4')">Al Jazeera (Int)</button>
-        <button class="p-btn" onclick="addFeed('V9K88A-vS7o')">DW News (DE)</button>
-        <button class="p-btn" onclick="addFeed('J_S07uVzWfI')">ABC News (US)</button>
-        <button class="p-btn" onclick="addFeed('9uX_6m9Wv9U')">France 24 (FR)</button>
-        <button class="p-btn" onclick="addFeed('qS_YI7hV7h8')">CNA (Asia)</button>
-        <button class="p-btn" onclick="addFeed('Co7m_6f6fFw')">Reuters Live</button>
-        <button class="p-btn" onclick="document.getElementById('monitor-wall').innerHTML=''" style="color:var(--red)">Reset Wall</button>
+        <input type="text" id="yt-url" placeholder="Paste YouTube Live Link Here...">
+        <button class="btn-main" onclick="handleInput()">ADD FEED</button>
+        <button class="btn-clear" onclick="document.getElementById('monitor-wall').innerHTML=''">CLEAR ALL</button>
     </div>
 </div>
 
@@ -81,53 +71,12 @@
 
 <div id="ticker">
     <div class="t-label">Global Pulse</div>
-    <div id="t-scroll">Fetching real-time global intelligence...</div>
+    <div id="t-scroll">Initialising world news headlines...</div>
 </div>
 
 <script>
-    // 1. Time Update
+    // 1. World Clocks Logic
     function updateClocks() {
-        const fmt = (tz) => new Date().toLocaleTimeString('en-GB', {timeZone: tz, hour: '2-digit', minute: '2-digit', second:'2-digit'});
-        document.getElementById('ny').innerText = fmt('America/New_York');
-        document.getElementById('ldn').innerText = fmt('Europe/London');
-        document.getElementById('tky').innerText = fmt('Asia/Tokyo');
-        document.getElementById('del').innerText = fmt('Asia/Kolkata');
-    }
-    setInterval(updateClocks, 1000);
-
-    // 2. Add Feed Logic
-    function addFeed(id) {
-        const wall = document.getElementById('monitor-wall');
-        const div = document.createElement('div');
-        div.className = 'monitor';
-        div.innerHTML = `
-            <div class="m-tools"><button class="m-btn" onclick="this.closest('.monitor').remove()">REMOVE</button></div>
-            <iframe src="https://www.youtube.com/embed/${id}?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        `;
-        wall.appendChild(div);
-    }
-
-    function handleInput() {
-        const val = document.getElementById('yt-url').value;
-        const vid = val.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
-        if (vid) {
-            addFeed(vid[1]);
-        } else if (val.trim() !== "") {
-            window.open(`https://www.youtube.com/results?search_query=${val}+live+news`, '_blank');
-        }
-        document.getElementById('yt-url').value = '';
-    }
-
-    // 3. Global RSS Ticker (BBC News)
-    async function getNews() {
-        try {
-            const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=https://feeds.bbci.co.uk/news/world/rss.xml`);
-            const data = await res.json();
-            document.getElementById('t-scroll').innerHTML = data.items.map(i => `<span>${i.title.toUpperCase()}</span>`).join('');
-        } catch(e) { console.log("Ticker failed"); }
-    }
-    getNews(); setInterval(getNews, 300000);
-</script>
-
-</body>
-</html>
+        const options = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+        document.getElementById('la').innerText = new Date().toLocaleTimeString('en-GB', { ...options, timeZone: 'America/Los_Angeles' });
+        document.getElementById('tel').innerText = new Date().toLocaleTimeString('en
