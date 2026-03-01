@@ -79,4 +79,61 @@
         document.getElementById('tel').innerText = new Date().toLocaleTimeString('en-GB', { ...options, timeZone: 'Asia/Jerusalem' });
         document.getElementById('teh').innerText = new Date().toLocaleTimeString('en-GB', { ...options, timeZone: 'Asia/Tehran' });
         document.getElementById('kyi').innerText = new Date().toLocaleTimeString('en-GB', { ...options, timeZone: 'Europe/Kyiv' });
-        document.getElementById('pyo').innerText = new Date().toLocaleTimeString('en-GB', { ...options, timeZone: 'Asia
+        document.getElementById('pyo').innerText = new Date().toLocaleTimeString('en-GB', { ...options, timeZone: 'Asia/Pyongyang' });
+    }
+    setInterval(updateClocks, 1000);
+    updateClocks();
+
+    function addFeed(id) {
+        const wall = document.getElementById('monitor-wall');
+        const div = document.createElement('div');
+        div.className = 'monitor';
+        div.innerHTML = `
+            <div class="m-tools"><button class="close-btn" onclick="this.closest('.monitor').remove()">REMOVE</button></div>
+            <iframe src="https://www.youtube.com/embed/${id}?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        `;
+        wall.appendChild(div);
+    }
+
+    function handleInput() {
+        const val = document.getElementById('yt-url').value;
+        const vid = val.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
+        if (vid) {
+            addFeed(vid[1]);
+            document.getElementById('yt-url').value = '';
+        } else {
+            alert("Invalid Link. Please paste a full YouTube video URL.");
+        }
+    }
+
+    async function getNews() {
+        const worldRss = "https://feeds.bbci.co.uk/news/world/rss.xml";
+        const laRss = "https://abc7.com/feed/";
+        
+        // Using a free RSS to JSON converter with a random cache-buster
+        const api = (url) => `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}&api_key=00000000000000000000000000000000&_=${Math.random()}`;
+
+        try {
+            const [worldRes, laRes] = await Promise.all([
+                fetch(api(worldRss)).then(r => r.json()),
+                fetch(api(laRss)).then(r => r.json())
+            ]);
+
+            let html = "";
+            if (worldRes.items) {
+                worldRes.items.slice(0, 10).forEach(i => html += `<span><b>WORLD</b> ${i.title.toUpperCase()}</span>`);
+            }
+            if (laRes.items) {
+                laRes.items.slice(0, 10).forEach(i => html += `<span><b>LOS ANGELES</b> ${i.title.toUpperCase()}</span>`);
+            }
+            document.getElementById('t-scroll').innerHTML = html;
+        } catch(e) { 
+            document.getElementById('t-scroll').innerHTML = "<span>Syncing Satellite Data...</span>";
+        }
+    }
+    getNews(); 
+    setInterval(getNews, 600000); // Update every 10 mins
+</script>
+
+</body>
+</html>
